@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<body>
+<h1>homepage</h1>
+
+<table>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label for="keyword">Keyword:</label><br>
+        <input type="keyword" id="keyword" name="keyword"><br>
+        <input type="submit" name="search" value ="searchKeyword">
+    </form>
+
+    {% for item in query_results %}
+        <tr> 
+            <td>{{ item.stockname }}</td>
+            <td>{{ item.student_age }}</td>
+            <td>{{ item.price }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
