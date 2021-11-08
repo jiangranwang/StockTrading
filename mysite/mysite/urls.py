@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from stock import views
 
 urlpatterns = [
     path('', include('homePage.urls')),
@@ -23,4 +24,6 @@ urlpatterns = [
     path('stock/', include('stock.urls')),
     path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
+    
+    path('stock/', include('stock.urls'))
 ]
