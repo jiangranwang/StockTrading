@@ -86,16 +86,6 @@ class User(models.Model):
         db_table = 'User'
 
 
-class Watchlist(models.Model):
-    userid = models.OneToOneField(User, models.DO_NOTHING, db_column='UserId', primary_key=True)  # Field name made lowercase.
-    stockid = models.ForeignKey(Stock, models.DO_NOTHING, db_column='StockId')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Watchlist'
-        unique_together = (('userid', 'stockid'),)
-
-
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -141,6 +131,16 @@ class AuthUser(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_user'
+
+
+class Watchlist(models.Model):
+    userid = models.OneToOneField(AuthUser, models.DO_NOTHING, db_column='UserId', primary_key=True)  # Field name made lowercase.
+    stockid = models.ForeignKey(Stock, models.DO_NOTHING, db_column='StockId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Watchlist'
+        unique_together = (('userid', 'stockid'),)
 
 
 class AuthUserGroups(models.Model):
