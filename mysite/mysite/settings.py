@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'accounts',
     'stock',
     'watchlist',
-    'models.chat',
 ]
 
 MIDDLEWARE = [
