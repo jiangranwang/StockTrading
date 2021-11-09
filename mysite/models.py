@@ -74,17 +74,6 @@ class Stockprice(models.Model):
         managed = False
         db_table = 'StockPrice'
 
-
-class Watchlist(models.Model):
-    userid = models.OneToOneField('AuthUser', models.DO_NOTHING, db_column='UserId', primary_key=True)  # Field name made lowercase.
-    stockid = models.ForeignKey(Stock, models.DO_NOTHING, db_column='StockId')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Watchlist'
-        unique_together = (('userid', 'stockid'),)
-
-
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -116,6 +105,7 @@ class AuthPermission(models.Model):
 
 
 class AuthUser(models.Model):
+    #id = models.BigAutoField(primary_key=True)
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.IntegerField()
@@ -130,6 +120,28 @@ class AuthUser(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_user'
+
+
+class User(models.Model):
+    userid = models.IntegerField(db_column='UserId', primary_key=True)  # Field name made lowercase.
+    firstname = models.CharField(db_column='FirstName', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    lastname = models.CharField(db_column='LastName', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    money = models.FloatField(db_column='Money', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'User'
+
+class Watchlist(models.Model):
+    UserId = models.OneToOneField(User, models.DO_NOTHING, db_column='userid', primary_key=True)  # Field name made lowercase.
+    StockId = models.ForeignKey(Stock, models.DO_NOTHING, db_column='StockId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Watchlist'
+        unique_together = (('UserId', 'StockId'),)
+
+
 
 
 class AuthUserGroups(models.Model):

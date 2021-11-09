@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>watchlist</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>StockId  </th>
+        <th>StockName  </th>
+        <th>Price  </th>
+        <th>High  </th>
+        <th>Low  </th>
+        <th>Volume  </th>
+        <th>Company  </th>
+        <th>MarketId  </th>
+        <th>Delete </th>
+    </tr>
+   
+    {% for record in watchlist %}
+        <tr>
+            <td>{{ record.stockid }}</td>
+            <td>{{ record.stockname }}</td>
+            <td>{{ record.price }}</td>
+            <td>{{ record.high }}</td>
+            <td>{{ record.low }}</td>
+            <td>{{ record.volume }}</td>
+            <td>{{ record.company}}</td>
+            <td>{{ record.marketid_id }}</td>
+            <td>
+                
+                <a href="http://127.0.0.1:8000/watchlist/watchlist_delete/?id={{ record.stockid }}">
+                    <button class="btn btn-primary">Delete</button></a>
+            </td>
+        </tr>
+    {% endfor %}
+  </table>
+  <form method="get" action="http://127.0.0.1:8000/watchlist/search_wl/">
+    {% csrf_token %}
+    <input type="search" name='wlstockid' placeholder="Type the stock ID you want to search " required>
+    <button type="submit">Search</button>
+  </form>
+            
+</body>
+</html>

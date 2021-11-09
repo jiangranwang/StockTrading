@@ -22,5 +22,5 @@ urlpatterns = [
     path('watchlist/', include('watchlist.urls')),
     path('stock/', include('stock.urls')),
     path('accounts/', include('accounts.urls')),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls)
 ]
