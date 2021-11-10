@@ -11,6 +11,7 @@ from .models import Stock
 # Create your views here.
 @login_required(login_url='login')
 def home_view(request):
+    print(request.method)
     watchlist = Stock.objects.raw('select * from Stock where stockid in '
                                   '(select stockid from Watchlist where UserId = '
                                   '(select id from auth_user where username = %s))', [request.user.username])
