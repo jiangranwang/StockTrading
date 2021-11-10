@@ -19,26 +19,6 @@ def homepage_view(request):
     context = {'queryset': queryset}
     return render(request, 'homepage/homePage.html', context)
 
-# # Create your views here.
-# @login_required(login_url='login')
-# def home_view(request):
-#     watchlist = Stock.objects.raw('select * from Stock where stockid in '
-#                                   '(select stockid from Watchlist where UserId = '
-#                                   '(select id from auth_user where username = %s))', [request.user.username])
-#     cursor = connection.cursor()
-#     cursor.execute('select stockname, freq from Stock natural join '
-#                    '(select count(userid) as freq, stockid from Watchlist '
-#                    'group by stockid having stockid in '
-#                    '(select stockid from Watchlist where UserId = '
-#                    '(select id from auth_user where username = %s))) a '
-#                    'order by freq desc, stockname asc', [request.user.username])
-#     rows = cursor.fetchall()
-#     freqs = []
-#     for r in rows:
-#         freqs.append({'stockname': r[0], 'freq': r[1]})
-#     return render(request, 'accounts/home.html', {'watchlist': watchlist, 'freqs': freqs})
-
-
 def advanced_search(request):
     if request.method == 'POST':
             stockname = request.POST['stockname']
