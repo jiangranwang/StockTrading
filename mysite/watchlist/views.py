@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 #from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Stock, Watchlist,AuthUser, User
+from .models import Stock, Watchlist,AuthUser
 import MySQLdb
 from django.forms.models import model_to_dict
 
@@ -19,7 +19,7 @@ def watchlist(request):
     user = AuthUser.objects.get(username=res)
     a = user.id
     result = Watchlist.objects.filter(UserId=a)
-    arr=[]
+    arr=[ ]
     for i in result:
         b=i.StockId
         c=model_to_dict(b)
@@ -50,21 +50,26 @@ def search_wl(request):
     if not wlstockid:
         error_msg = 'Please input a stock ID'
         print(error_msg)
-    search_list = Stock.objects.get(stockid = wlstockid)
-    print(model_to_dict(search_list))
+    try: 
+        search_list = Stock.objects.get(stockid = wlstockid)
+    except Exception:
+        return HttpResponse('Stock not found.')
+    #print(model_to_dict(search_list))
     return render(request, 'watchlist/wlresults.html', {'search_list': search_list})
+ 
+
 
 
 def watchlist_add(request):
     res = request.user.username
     user = AuthUser.objects.get(username=res)
     x = user.id
-    user2 = User.objects.get(userid=x)
-    id = request.GET["id"]
-    print(id)
+    user2 = AuthUser.objects.get(id=x)
+    id = request.GET["id"]   
     stock=Stock.objects.get(stockid = id)
     if Watchlist.objects.filter(StockId=id, UserId=x):
         return HttpResponse("Stock already exists in your watchlist.")
     else: 
         Watchlist.objects.create(StockId=stock, UserId=user2)
         return HttpResponse("Stock is successfully added in your watchlist.")
+    

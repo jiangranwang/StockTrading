@@ -1,20 +1,25 @@
-<h1>Accounts Home Page</h1>
-
-<p>Show watchlist here</p>
-
+<h1>Account Home Page</h1>
 {% if err %}
     <p style="color:#FF0000">Error: {{ err }}</p>
 {% endif %}
+<h2>Hello, {{ request.user }}</h2>
 
-<h3>Change password here:</h3>
-<form method="POST" action="">
-    {% csrf_token %}
-    {{ changeForm.as_p }}
-    <input type="submit" name="ChangeForm">
-</form>
-{{ form.error }}
+<p>Your Watchlist:</p>
+<p>&emsp;&emsp;StockName, Price</p>
+{% for item in watchlist %}
+    <ul>
+        <li>{{ item.stockname }}, {{ item.price }}</li>
+    </ul>
+{% endfor %}
 
-<p>Username is {{ request.user }}</p>
+<p>Frequencies in Watchlist:</p>
+<p>&emsp;&emsp;StockName, Frequency</p>
+{% for item in freqs %}
+    <ul>
+        <li>{{ item.stockname }}, {{ item.freq }}</li>
+    </ul>
+{% endfor %}
+
+<a href="{% url 'update_password' %}">Change Password</a><br>
 <a href="{% url 'logout' %}">Logout</a><br>
-
 <a href="{% url 'delete_user' %}" onclick="return confirm('Are you sure to delete your account?')">Delete User</a>

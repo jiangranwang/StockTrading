@@ -122,18 +122,9 @@ class AuthUser(models.Model):
         db_table = 'auth_user'
 
 
-class User(models.Model):
-    userid = models.IntegerField(db_column='UserId', primary_key=True)  # Field name made lowercase.
-    firstname = models.CharField(db_column='FirstName', max_length=30, blank=True, null=True)  # Field name made lowercase.
-    lastname = models.CharField(db_column='LastName', max_length=30, blank=True, null=True)  # Field name made lowercase.
-    money = models.FloatField(db_column='Money', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'User'
 
 class Watchlist(models.Model):
-    UserId = models.OneToOneField(User, models.DO_NOTHING, db_column='userid', primary_key=True)  # Field name made lowercase.
+    UserId = models.OneToOneField(AuthUser, models.DO_NOTHING, db_column='id', primary_key=True)  # Field name made lowercase.
     StockId = models.ForeignKey(Stock, models.DO_NOTHING, db_column='StockId')  # Field name made lowercase.
 
     class Meta:
