@@ -1,75 +1,55 @@
-from django.shortcuts import render
-
-# Create your views here.
-from django.http import HttpResponse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-#from django.shortcuts import render_to_response
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Stock, Watchlist,AuthUser
-import MySQLdb
-from django.forms.models import model_to_dict
+from .models import Stock, Watchlist, AuthUser
+from django.db import connection
+cursor = connection.cursor()
 
-
-  
 
 @login_required(login_url='login')
-def watchlist(request):
-    res = request.user.username
-    user = AuthUser.objects.get(username=res)
-    a = user.id
-    result = Watchlist.objects.filter(UserId=a)
-    arr=[ ]
+def index(request):
+    username = request.user.username
+    user = AuthUser.objects.raw('select * from auth_user where username = %s', [username])[0]
+    result = Watchlist.objects.raw('select * from Watchlist where userid = %s', [user.id])
+    arr = []
     for i in result:
-        b=i.StockId
-        c=model_to_dict(b)
-        fresult = Stock.objects.get(stockid=c['stockid'])
-        arr.append(fresult)
-    return render(request, 'watchlist/watchlist.html',{'watchlist':arr})
-    
+        res = Stock.objects.raw('select * from Stock where stockid = %s', [i.StockId.stockid])[0]
+        arr.append(res)
+    return render(request, 'watchlist/watchlist.html', {'watchlist': arr})
 
-def watchlist_delete(request):
-    res = request.user.username
-    user = AuthUser.objects.get(username=res)
-    x = user.id
-    id = request.GET["id"]
-    if Watchlist.objects.filter(UserId=x, StockId=id):
-        mystock = Watchlist.objects.filter(UserId=x, StockId=id)
-        mystock.delete()
-        #mystock.save()
-        #return redirect('watchlist')
-        return HttpResponse('Stock is successfully removed from your watchlist.')
+
+def add(request):
+    username = request.user.username
+    user = AuthUser.objects.raw('select * from auth_user where username = %s', [username])[0]
+    stockId = request.GET["id"]
+    if len(Watchlist.objects.raw('select * from Watchlist where stockid = %s and userid = %s', [stockId, user.id])) > 0:
+        messages.error(request, "Stock already exists in your watchlist.")
     else:
-        return HttpResponse('Item not found.')
+        cursor.execute('insert into Watchlist (userid, stockid) values (%s, %s)', [user.id, stockId])
+        messages.success(request, "Stock is successfully added in your watchlist.")
+    return redirect('index')
 
 
-
-def search_wl(request):
-    wlstockid = request.GET.get('wlstockid')
-    error_msg = ''
-    if not wlstockid:
-        error_msg = 'Please input a stock ID'
-        print(error_msg)
-    try: 
-        search_list = Stock.objects.get(stockid = wlstockid)
-    except Exception:
-        return HttpResponse('Stock not found.')
-    #print(model_to_dict(search_list))
-    return render(request, 'watchlist/wlresults.html', {'search_list': search_list})
- 
+def delete(request):
+    username = request.user.username
+    user = AuthUser.objects.raw('select * from auth_user where username = %s', [username])[0]
+    stockId = request.GET["id"]
+    if Watchlist.objects.raw('select * from Watchlist where userid = %s and stockid = %s', [user.id, stockId]):
+        cursor.execute('delete from Watchlist where userid = %s and stockid = %s', [user.id, stockId])
+        messages.success(request, 'Stock is successfully removed from your watchlist.')
+    else:
+        messages.error(request, 'Item not found.')
+    return redirect('index')
 
 
-
-def watchlist_add(request):
-    res = request.user.username
-    user = AuthUser.objects.get(username=res)
-    x = user.id
-    user2 = AuthUser.objects.get(id=x)
-    id = request.GET["id"]   
-    stock=Stock.objects.get(stockid = id)
-    if Watchlist.objects.filter(StockId=id, UserId=x):
-        return HttpResponse("Stock already exists in your watchlist.")
-    else: 
-        Watchlist.objects.create(StockId=stock, UserId=user2)
-        return HttpResponse("Stock is successfully added in your watchlist.")
-    
+def search(request):
+    stockId = request.GET.get('wlstockid')
+    if not stockId:
+        messages.error(request, 'Please input a stock id')
+        return redirect('index')
+    else:
+        result = Stock.objects.raw('select * from Stock where stockid = %s', [stockId])
+        if len(result) == 0:
+            messages.error(request, 'Stock id invalid')
+            return redirect('index')
+        return render(request, 'watchlist/wlresults.html', {'search_list': result[0]})

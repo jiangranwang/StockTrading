@@ -10,7 +10,6 @@ from .models import Stock
 cursor = connection.cursor()
 
 
-# Create your views here.
 @login_required(login_url='login')
 def home_view(request):
     print(request.method)

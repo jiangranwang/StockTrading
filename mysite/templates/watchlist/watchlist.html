@@ -30,17 +30,19 @@
             <td>{{ record.marketid_id }}</td>
             <td>
                 
-                <a href="http://127.0.0.1:8000/watchlist/watchlist_delete/?id={{ record.stockid }}">
+                <a href="http://127.0.0.1:8000/watchlist/delete/?id={{ record.stockid }}">
                     <button class="btn btn-primary">Delete</button></a>
             </td>
         </tr>
     {% endfor %}
   </table>
-  <form method="get" action="http://127.0.0.1:8000/watchlist/search_wl/">
+  <form method="get" action="http://127.0.0.1:8000/watchlist/search/">
     {% csrf_token %}
     <input type="search" name='wlstockid' placeholder="Type the stock ID you want to search " required>
     <button type="submit">Search</button>
   </form>
-            
+{% for message in messages %}
+    <p>{{ message }}</p>
+{% endfor %}
 </body>
 </html>
