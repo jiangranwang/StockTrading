@@ -1,0 +1,21 @@
+<h1>Advanced Search</h1>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    <label for="stockname">Stock Name:</label><br>
+    <input type="stockname" id="stockname" name="stockname"><br>
+    <label for="company">Company:</label><br>
+    <input type="company" id="company" name="company"><br>
+    <label for="price">Lower Bound of Price:</label><br>
+    <input type="price" id="price" name="price"><br>
+    <input type="submit" name="search" value ="search">
+</form>
+
+<h2>search result</h2>
+<h3>Stock Name,   Company Name,  Price</h3>
+{% for item in queryset %}
+    <ul>
+        <li>{{ item.stockname }}, {{ item.company }}, {{ item.price }}</li>
+    </ul>
+{% endfor %}
+

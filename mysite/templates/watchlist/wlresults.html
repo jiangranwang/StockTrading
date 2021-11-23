@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>watchlist</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>StockId  </th>
+        <th>StockName  </th>
+        <th>Price  </th>
+        <th>High  </th>
+        <th>Low  </th>
+        <th>Volume  </th>
+        <th>Company  </th>
+        <th>MarketId  </th>
+        <th>Delete </th>
+    </tr>
+    
+        <tr>
+            <td>{{ search_list.stockid }}</td>
+            <td>{{ search_list.stockname }}</td>
+            <td>{{ search_list.price }}</td>
+            <td>{{ search_list.high }}</td>
+            <td>{{ search_list.low }}</td>
+            <td>{{ search_list.volume }}</td>
+            <td>{{ search_list.company}}</td>
+            <td>{{ search_list.marketid }}</td>
+            <td><a href="http://127.0.0.1:8000/watchlist/add/?id={{ search_list.stockid }}"><button class="btn btn-primary">Add</button></a>
+            </td>
+        </tr>
+
+  </table>
+  
+</body>
+</html>
