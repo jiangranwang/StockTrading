@@ -1,16 +1,31 @@
-<h1>Login Page</h1>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Login - SB Admin</title>
+        <link href="../startbootstrap-sb-admin-gh-pages/css/styles.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="bg-primary">
+        <h1>Login Page</h1>
 
-<form method="POST" action="">
-    {% csrf_token %}
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br><br>
-    <input type="submit" name="Auth">
-</form>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br><br>
+            <input type="submit" name="Auth">
+        </form>
 
-{% for message in messages %}
-    <p>{{ message }}</p>
-{% endfor %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
 
-<a href="{% url 'register' %}">No account? Register here</a>
+        <a href="{% url 'register' %}">No account? Register here</a>
+    </body>
+</html>
