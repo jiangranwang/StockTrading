@@ -13,8 +13,8 @@
 <h3>stockname    price</h2>
 {% for item in queryset %}
     <p> 
-        <td>{{ item.stockname  }}</td>
-        <td>{{ item.price }}</td>
+        <a href="{% url 'stock-graph' item.stockname %}"><td>{{ item.stockname  }}</td>
+        <td>{{ item.price }}</td></a>
     </p>
 {% endfor %}
 
