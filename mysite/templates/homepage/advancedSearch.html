@@ -31,7 +31,7 @@
                 {% for item in queryset %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td><a href="{% url 'stock-graph' item.stockname %}">{{ item.stockname }}</td>
+                    <td><a href="{% url 'stock-graph' item.stockname %}">{{ item.stockname }}</a></td>
                     <td>{{ item.company }}</td>
                     <td>{{ item.price }}</td>
                 </tr>
