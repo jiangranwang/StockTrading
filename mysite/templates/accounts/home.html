@@ -48,12 +48,12 @@
                     </thead>
                     <tbody>
                     {% for item in watchlist %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ item.stockname }}</td>
-                            <td>{{ item.price }}</td>
-                            <td>{{ item.freq }}</td>
-                        </tr>
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ item.stockname }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.freq }}</td>
+                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>

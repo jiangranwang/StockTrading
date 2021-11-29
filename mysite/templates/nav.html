@@ -1,10 +1,13 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <a class="navbar-brand ms-4" href="../">StockTrading</a>
-    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+    <form method="POST" action="../" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        {% csrf_token %}
         <div class="input-group">
-            <input class="form-control" type="text" placeholder="Search stock..." aria-label="Search stock..." aria-describedby="btnNavbarSearch" />
-            <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            <label for="keyword">Keyword:</label><br>
+            <input class="form-control" type="text" id="keyword" name="keyword" placeholder="Search stock..." aria-label="Search stock..." aria-describedby="keyword" />
+            <button class="btn btn-primary" name="search" type="submit" value="search"><i class="fas fa-search"></i></button>
         </div>
     </form>
+    <a class="nav-link me-1 text-secondary" href="{% url 'AdvancedSearch' %}">Advanced Search</a>
     <a class="nav-link me-4 text-info" href="../accounts/">My Account</a>
 </nav>

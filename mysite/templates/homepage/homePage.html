@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Login</title>
+    <title>Home</title>
     <link href="../static/css/styles.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
@@ -14,24 +14,32 @@
         $("#nav-placeholder").load("../nav.html");
     });
     </script>
-<h1>homepage</h1>
-
-<form method="POST" action="">
-    {% csrf_token %}
-    <label for="keyword">Keyword:</label><br>
-    <input type="keyword" id="keyword" name="keyword"><br>
-    <input type="submit" name="search" value ="search">
-</form>
-
-<a href="{% url 'AdvancedSearch' %}">check more information in advanced search</a>
-
-<h2>search result</h2>
-<h2>stockname    price</h2>
-{% for item in queryset %}
-    <p> 
-        <a href="{% url 'stock-graph' item.stockname %}"><td>{{ item.stockname  }}</td>
-        <td>{{ item.price }}</td></a>
-    </p>
-{% endfor %}
-
+    <div class="container m-5">
+        {% if queryset %}
+        <div class="col-8 m-3">
+            <h2>Search Result:</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Stock Name</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in queryset %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href="{% url 'stock-graph' item.stockname %}">{{ item.stockname }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <h1 class="text-center">Search Something!</h1>
+        {% endif %}
+    </div>
 </body>
+</html>
