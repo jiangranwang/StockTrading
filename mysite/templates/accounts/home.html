@@ -1,25 +1,64 @@
-<h1>Account Home Page</h1>
-{% if err %}
-    <p style="color:#FF0000">Error: {{ err }}</p>
-{% endif %}
-<h2>Hello, {{ request.user }}</h2>
-
-<p>Your Watchlist:</p>
-<p>&emsp;&emsp;StockName, Price</p>
-{% for item in watchlist %}
-    <ul>
-        <li>{{ item.stockname }}, {{ item.price }}</li>
-    </ul>
-{% endfor %}
-
-<p>Frequencies in Watchlist:</p>
-<p>&emsp;&emsp;StockName, Frequency</p>
-{% for item in freqs %}
-    <ul>
-        <li>{{ item.stockname }}, {{ item.freq }}</li>
-    </ul>
-{% endfor %}
-
-<a href="{% url 'update_password' %}">Change Password</a><br>
-<a href="{% url 'logout' %}">Logout</a><br>
-<a href="{% url 'delete_user' %}" onclick="return confirm('Are you sure to delete your account?')">Delete User</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>My Account</title>
+    <link href="../static/css/styles.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+    <script>
+    $(function(){
+        $("#nav-placeholder").load("../nav.html");
+    });
+    </script>
+    <div class="container mt-5">
+        {% if err %}
+            <div class="row-md alert alert-success my-2" role="alert">
+                Error: {{ err }}
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-2 m-3">
+                <h2>Hello, {{ request.user }}</h2>
+                <ul class="list-group mt-3">
+                    <li class="list-group-item">
+                        <a class="text-decoration-none" href="{% url 'update_password' %}">Change Password</a><br>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-decoration-none" href="{% url 'logout' %}">Logout</a><br>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-decoration-none" href="{% url 'delete_user' %}" onclick="return confirm('Are you sure to delete your account?')">Delete My Account</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-8 m-3">
+                <h2>Your Watchlist:</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Stock Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col"># Watchers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in watchlist %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ item.stockname }}</td>
+                            <td>{{ item.price }}</td>
+                            <td>{{ item.freq }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

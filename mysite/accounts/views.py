@@ -24,9 +24,9 @@ def home_view(request):
                    'order by freq desc, stockname asc', [request.user.username])
     rows = cursor.fetchall()
     freqs = []
-    for r in rows:
-        freqs.append({'stockname': r[0], 'freq': r[1]})
-    return render(request, 'accounts/home.html', {'watchlist': watchlist, 'freqs': freqs})
+    for i, r in enumerate(watchlist):
+        freqs.append({'stockname': r.stockname, 'price': r.price, 'freq': rows[i][1]})
+    return render(request, 'accounts/home.html', {'watchlist': freqs})
 
 
 @login_required(login_url='login')
