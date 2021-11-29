@@ -19,6 +19,10 @@ from stock import views
 
 urlpatterns = [
     path('', include('homePage.urls')),
+    path('chat/', include('chat.urls')),
+    
+    path('comment/', include('comment.urls')),
+    path('api/', include('comment.api.urls')),
     path('home/', include('homePage.urls')),
     path('watchlist/', include('watchlist.urls')),
     path('stock/', include('stock.urls')),
