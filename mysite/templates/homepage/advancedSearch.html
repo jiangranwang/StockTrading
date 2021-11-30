@@ -1,21 +1,62 @@
-<h1>Advanced Search</h1>
-
-<form method="POST" action="">
-    {% csrf_token %}
-    <label for="stockname">Stock Name:</label><br>
-    <input type="stockname" id="stockname" name="stockname"><br>
-    <label for="company">Company:</label><br>
-    <input type="company" id="company" name="company"><br>
-    <label for="price">Lower Bound of Price:</label><br>
-    <input type="price" id="price" name="price"><br>
-    <input type="submit" name="search" value ="search">
-</form>
-
-<h2>search result</h2>
-<h3>Stock Name,   Company Name,  Price</h3>
-{% for item in queryset %}
-    <ul>
-        <li>{{ item.stockname }}, {{ item.company }}, {{ item.price }}</li>
-    </ul>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Advanced Search</title>
+    <link href="../static/css/styles.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+    <script>
+    $(function(){
+        $("#nav-placeholder").load("../nav.html");
+    });
+    </script>
+    <div class="container m-5">
+        {% if queryset %}
+        <div class="col-8 m-3">
+            <h2>Search Result:</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Stock Name</th>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in queryset %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href="{% url 'stock-graph' item.stockname %}">{{ item.stockname }}</a></td>
+                    <td>{{ item.company }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="col-3">
+            <h2>Advanced Search</h2>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="stockname">Stock Name:</label>
+                    <input type="text" class="form-control" id="stockname" name="stockname">
+                    <label for="company">Company:</label>
+                    <input type="text" class="form-control" id="company" name="company">
+                    <label for="price">Lower Bound of Price:</label>
+                    <input type="text" class="form-control" id="price" name="price"><br>
+                    <button type="submit" value="search" class="btn btn-primary" name="ChangeForm">Submit</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
 

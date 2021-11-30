@@ -15,13 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from stock import views
+from django.shortcuts import render
+
+
+def get_nav(request):
+    return render(request, 'nav.html')
+
 
 urlpatterns = [
     path('', include('homePage.urls')),
+    path('chat/', include('chat.urls')),
+    
+    path('comment/', include('comment.urls')),
+    path('api/', include('comment.api.urls')),
     path('home/', include('homePage.urls')),
     path('watchlist/', include('watchlist.urls')),
     path('stock/', include('stock.urls')),
     path('accounts/', include('accounts.urls')),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('nav.html', get_nav),
 ]

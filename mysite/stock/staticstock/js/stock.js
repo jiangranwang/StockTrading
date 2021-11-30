@@ -9,7 +9,7 @@
 const log = console.log;
 
 const chartProperties = {
-  width:1500,
+  width:800,
   height:600,
   timeScale:{
     timeVisible:true,

@@ -19,6 +19,7 @@ def homepage_view(request):
     context = {'queryset': queryset}
     return render(request, 'homepage/homePage.html', context)
 
+
 def advanced_search(request):
     if request.method == 'POST':
             stockname = request.POST['stockname']
