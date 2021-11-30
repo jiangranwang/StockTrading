@@ -6,7 +6,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.db import connection
 from .forms import CreateUserForm
-from .models import Stock
+from .models import Stock, AuthUser, Watchlist
 cursor = connection.cursor()
 
 
@@ -25,7 +25,7 @@ def home_view(request):
     rows = cursor.fetchall()
     freqs = []
     for i, r in enumerate(watchlist):
-        freqs.append({'stockname': r.stockname, 'price': r.price, 'freq': rows[i][1]})
+        freqs.append({'stockid': r.stockid, 'stockname': r.stockname, 'price': r.price, 'freq': rows[i][1]})
     cursor.callproc('Recommend')
     rows = cursor.fetchall()
     recommend = []
@@ -101,6 +101,19 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'User is logged out')
     return redirect('login')
+
+
+def delete(request):
+    username = request.user.username
+    user = AuthUser.objects.raw('select * from auth_user where username = %s', [username])[0]
+    stockId = request.GET["id"]
+    stockName = request.GET["name"]
+    if Watchlist.objects.raw('select * from Watchlist where userid = %s and stockid = %s', [user.id, stockId]):
+        cursor.execute('delete from Watchlist where userid = %s and stockid = %s', [user.id, stockId])
+        messages.success(request, 'Stock ' + stockName + ' is successfully removed from your watchlist.')
+    else:
+        messages.error(request, 'Stock ' + stockName + ' not found.')
+    return redirect('home')
 
 
 def add_procedure():

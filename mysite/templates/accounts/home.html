@@ -15,11 +15,11 @@
     });
     </script>
     <div class="container mt-5">
-        {% if err %}
-        <div class="row-md alert alert-success my-2" role="alert">
-            Error: {{ err }}
-        </div>
-        {% endif %}
+        {% for message in messages %}
+            <div class="alert alert-success my-2" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div class="row">
             <div class="col-2 m-3">
                 <h2>Hello, {{ request.user }}</h2>
@@ -44,6 +44,7 @@
                             <th scope="col">Stock Name</th>
                             <th scope="col">Price</th>
                             <th scope="col"># Watchers</th>
+                            <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +54,7 @@
                         <td><a href="{% url 'stock-graph' item.stockname %}">{{ item.stockname }}</a></td>
                         <td>{{ item.price }}</td>
                         <td>{{ item.freq }}</td>
+                        <td><a href="delete/?id={{ item.stockid }}&name={{ item.stockname }}"><button class="btn btn-primary">Delete</button></a></td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -62,13 +64,13 @@
                 <h2>Recommended Stocks</h2>
                 <ul class="list-group mt-3">
                     <li class="list-group-item">
-                        Fastest Increasing Stock: <a href="{% url 'stock-graph' recommend.0 %}">{{ recommend.0 }}</a><br>
+                        Fastest Decreasing Stock: <a href="{% url 'stock-graph' recommend.0 %}">{{ recommend.0 }}</a><br>
                     </li>
                     <li class="list-group-item">
-                        Fastest Decreasing Stock: <a href="{% url 'stock-graph' recommend.0 %}">{{ recommend.1 }}</a><br>
+                        Fastest Increasing Stock: <a href="{% url 'stock-graph' recommend.1 %}">{{ recommend.1 }}</a><br>
                     </li>
                     <li class="list-group-item">
-                        Frequently Watched Stock: <a href="{% url 'stock-graph' recommend.0 %}">{{ recommend.2 }}</a><br>
+                        Frequently Watched Stock: <a href="{% url 'stock-graph' recommend.2 %}">{{ recommend.2 }}</a><br>
                     </li>
                 </ul>
             </div>

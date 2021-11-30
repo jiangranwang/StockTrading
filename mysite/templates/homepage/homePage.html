@@ -15,6 +15,11 @@
     });
     </script>
     <div class="container m-5">
+        {% for message in messages %}
+            <div class="alert alert-success my-2" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% if queryset %}
         <div class="col-8 m-3">
             <h2>Search Result:</h2>
@@ -24,6 +29,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Stock Name</th>
                         <th scope="col">Price</th>
+                        <th scope="col">Add</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +38,7 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <td><a href="{% url 'stock-graph' item.stockname %}">{{ item.stockname }}</a></td>
                     <td>{{ item.price }}</td>
+                    <td><a href="add/?id={{ item.stockid }}&name={{ item.stockname }}"><button class="btn btn-primary">Add</button></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

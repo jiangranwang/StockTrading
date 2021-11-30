@@ -15,8 +15,14 @@
     });
     </script>
     <div class="container m-5">
-        {% if queryset %}
+        {% if result %}
         <div class="col-8 m-3">
+            {% if queryset %}
+            {% else %}
+            <div class="alert alert-warning my-2" role="alert">
+                No result found!
+            </div>
+            {% endif %}
             <h2>Search Result:</h2>
             <table class="table table-striped">
                 <thead>
@@ -25,6 +31,7 @@
                         <th scope="col">Stock Name</th>
                         <th scope="col">Company Name</th>
                         <th scope="col">Price</th>
+                        <th scope="col">Add</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +41,7 @@
                     <td><a href="{% url 'stock-graph' item.stockname %}">{{ item.stockname }}</a></td>
                     <td>{{ item.company }}</td>
                     <td>{{ item.price }}</td>
+                    <td><a href="add/?id={{ item.stockid }}&name={{ item.stockname }}"><button class="btn btn-primary">Add</button></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

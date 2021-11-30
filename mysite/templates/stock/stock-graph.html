@@ -17,23 +17,31 @@
     </script>
     <div class="container m-5">
         <h2 class="text-center">Stock Name: {{ stockname }}</h2>
+        <p>Company Name: {{ company }}</p>
+        <p>Current Volume: {{ volume }}</p>
         <h3>Chart</h3>
-        
-        <div id="tvchart"></div>
+
+        <div class="border border-dark mb-5" id="tvchart"></div>
         
         <h3>Detailed Prices</h3>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Date</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Open</th>
+                    <th scope="col">Close</th>
+                    <th scope="col">High</th>
+                    <th scope="col">Low</th>
                 </tr>
             </thead>
             <tbody>
             {% for item in stockinfo %}
             <tr>
                 <td>{{ item.time }}</td>
-                <td>{{ item.price }}</td>
+                <td>{{ item.open }}</td>
+                <td>{{ item.close }}</td>
+                <td>{{ item.high }}</td>
+                <td>{{ item.low }}</td>
             </tr>
             {% endfor %}
             </tbody>

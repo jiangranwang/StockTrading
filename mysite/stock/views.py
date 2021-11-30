@@ -18,14 +18,16 @@ class Index(View):
 def stock_graph(request, StockName):
     #stock = Stock.objects.get(stockname=StockName)
     cursor = connection.cursor()
-    cursor.execute('SELECT s.Time, s.Price, k.High, k.Low, s.Price FROM StockPrice s join Stock k using(stockid) where k.stockname = %s',[StockName])
+    cursor.execute('SELECT s.Time, s.High, s.Low, s.Open, s.Close FROM StockPrice s join Stock k using(stockid) where k.stockname = %s',[StockName])
     #queryset = Stock.objects.raw('SELECT s.Time, k.Price, k.High, k.Low, s.Price FROM StockPrice s join Stock k using(stockid) where k.stockname = StockName')
     rows = cursor.fetchall()
     stockinfo = []
     for r in rows:
-        stockinfo.append({'time': r[0], 'open': r[4], 'high': r[2], 'low': r[3], 'close': r[2], 'price': r[1]})
+        stockinfo.append({'time': r[0], 'high': r[2], 'low': r[3], 'open': r[3], 'close': r[4]})
+    cursor.execute('SELECT company, volume FROM Stock where stockname = %s', [StockName])
+    result = cursor.fetchall()
 
-    context = {'stockinfo': stockinfo, 'stockname': StockName}
+    context = {'stockinfo': stockinfo, 'stockname': StockName, 'company': result[0][0], 'volume': result[0][1]}
     #for q in queryset:
     return render(request, 'stock/stock-graph.html', context)
     
