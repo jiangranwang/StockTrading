@@ -11,10 +11,10 @@ const log = console.log;
 const chartProperties = {
   width:1200,
   height:600,
-  layout: {
-    backgroundColor: '#000000',
-    textColor: 'rgba(255, 255, 255, 0.9)',
-    },
+//  layout: {
+//    backgroundColor: '#000000',
+//    textColor: 'rgba(255, 255, 255, 0.9)',
+//    },
   timeScale:{
     timeVisible:true,
     secondsVisible:false,
@@ -34,9 +34,9 @@ const chartProperties = {
 const domElement = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(domElement,chartProperties);
 const candleSeries = chart.addCandlestickSeries({
-    upColor: 'rgba(255, 144, 0, 1)',
-    downColor: '#000',
-    borderDownColor: 'rgba(255, 144, 0, 1)',
+    upColor: 'rgba(180, 57, 62, 1)',
+    downColor: 'rgba(62, 140, 39, 1)',
+    borderDownColor: 'rgba(255, 0, 0, 1)',
     borderUpColor: 'rgba(255, 144, 0, 1)',
     wickDownColor: 'rgba(255, 144, 0, 1)',
     wickUpColor: 'rgba(255, 144, 0, 1)',
