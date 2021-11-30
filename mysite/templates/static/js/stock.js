@@ -9,17 +9,38 @@
 const log = console.log;
 
 const chartProperties = {
-  width:1500,
+  width:1200,
   height:600,
+  layout: {
+    backgroundColor: '#000000',
+    textColor: 'rgba(255, 255, 255, 0.9)',
+    },
   timeScale:{
     timeVisible:true,
     secondsVisible:false,
-  }
+
+  },
+  rightPriceScale: {
+    borderColor: 'rgba(197, 203, 206, 0.8)',
+  },
+  timeScale: {
+    borderColor: 'rgba(197, 203, 206, 0.8)',
+  },
+  crosshair: {
+    mode: LightweightCharts.CrosshairMode.Normal,
+  },
 }
 
 const domElement = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(domElement,chartProperties);
-const candleSeries = chart.addCandlestickSeries();
+const candleSeries = chart.addCandlestickSeries({
+    upColor: 'rgba(255, 144, 0, 1)',
+    downColor: '#000',
+    borderDownColor: 'rgba(255, 144, 0, 1)',
+    borderUpColor: 'rgba(255, 144, 0, 1)',
+    wickDownColor: 'rgba(255, 144, 0, 1)',
+    wickUpColor: 'rgba(255, 144, 0, 1)',
+  });
 
 /*fetch(`https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1d&limit=1000`)
   .then(res => res.json())
