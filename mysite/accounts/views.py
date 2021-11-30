@@ -23,6 +23,8 @@ def home_view(request):
                    '(select id from auth_user where username = %s))) a '
                    'order by freq desc, stockname asc', [request.user.username])
     rows = cursor.fetchall()
+    cursor.callproc('Recommend')
+    print(cursor.fetchall())
     freqs = []
     for i, r in enumerate(watchlist):
         freqs.append({'stockname': r.stockname, 'price': r.price, 'freq': rows[i][1]})
@@ -96,3 +98,104 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'User is logged out')
     return redirect('login')
+
+
+def add_procedure():
+    cursor.execute(
+        '''
+        create procedure Recommend()
+begin
+declare decreaseStock varchar(255);
+declare increaseStock varchar(255);
+declare favoriteStock varchar(255);
+declare sn varchar(255);
+declare fp real;
+declare cp real;
+declare diff real;
+declare done boolean default false;
+
+    	declare cur1 cursor for 
+ (
+       		select stockname, max_price, curr_price
+from (select stockname, price as curr_price from Stock) a
+natural join (select stockname, max(sp.price) as max_price from Stock s join StockPrice sp using(StockId) group by stockname) b
+);
+declare cur2 cursor for 
+ (
+       		select stockname, avg_price, curr_price
+from (select stockname, price as curr_price from Stock) a
+natural join (select stockname, avg(sp.price) as avg_price from Stock s join StockPrice sp using(StockId) group by stockname) b
+);
+declare cur3 cursor for 
+ (
+	select stockname from Stock join 
+(
+		select stockId, count(userId) as cnt 
+		from Watchlist
+		group by stockId
+) a using(stockId)
+order by cnt desc
+limit 1
+);
+
+    	declare continue handler for not found set done = true;
+
+	drop table if exists final;
+   	create table final
+    	(
+        		id int,
+        		stockname varchar(255)
+    	);
+
+    
+	set diff = 0;
+   	open cur1;
+    	myloop: loop
+        		if done then
+            		leave myloop;
+        		end if;
+        		fetch cur1 into sn, fp, cp;
+		
+        		if fp - cp > diff then
+            		set diff = fp - cp;
+			set decreaseStock = sn;
+        		end if;
+    	end loop myloop;
+    	close cur1;
+
+	set diff = 0;
+	set done = false;
+   	open cur2;
+    	myloop: loop
+        		if done then
+            		leave myloop;
+        		end if;
+        		fetch cur2 into sn, fp, cp;
+		
+        		if cp - fp > diff then
+            		set diff = cp - fp;
+			set increaseStock = sn;
+        		end if;
+    	end loop myloop;
+    	close cur2;
+
+    set done = false;
+	open cur3;
+    	myloop: loop
+        		if done then
+            		leave myloop;
+        		end if;
+        		fetch cur3 into favoriteStock;
+    	end loop myloop;
+    	close cur3;
+
+	insert into final values(1, decreaseStock);
+	insert into final values(2, increaseStock);
+	Insert into final values(3, favoriteStock);
+
+	select * from final order by id asc;
+end
+        '''
+    )
+
+# add_procedure()

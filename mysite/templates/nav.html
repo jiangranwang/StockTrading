@@ -1,6 +1,7 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand ms-4" href="../">StockTrading</a>
-    <form method="POST" action="../" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+    <a class="navbar-brand ms-4" href="../../">StockTrading</a>
+    <a class="nav-link text-info" href="../../chat/">Chat Room</a>
+    <form method="POST" action="../../" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         {% csrf_token %}
         <div class="input-group">
             <label for="keyword">Keyword:</label><br>
@@ -9,5 +10,5 @@
         </div>
     </form>
     <a class="nav-link me-1 text-secondary" href="{% url 'AdvancedSearch' %}">Advanced Search</a>
-    <a class="nav-link me-4 text-info" href="../accounts/">My Account</a>
+    <a class="nav-link me-4 text-info" href="../../accounts/">My Account</a>
 </nav>
