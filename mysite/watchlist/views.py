@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Stock, Watchlist, AuthUser
 from django.db import connection
+
 cursor = connection.cursor()
 
 
@@ -54,16 +55,15 @@ def search(request):
             return redirect('index')
         return render(request, 'watchlist/wlresults.html', {'search_list': result[0]})
 
-    #trigger
-    
-cursor.execute( 'DELIMITER $  '
-                'CREATE TRIGGER addeuser After insert '
-                'ON auth_user FOR EACH ROW '
-                'BEGIN '
-	            '   SET @USER = (select StockId from Watchlist where UserId = new.id); '
-                '   IF @USER IS NULL THEN '
-		        '       insert into Watchlist value(new.id,81),(new.id,82),(new.id,83); '
-	            '   END IF; '
-                'END $'
-                'DELIMITER ;'
-                )
+
+def trigger():
+    cursor.execute(
+        'CREATE TRIGGER addeuser After insert '
+        'ON auth_user FOR EACH ROW '
+        'BEGIN '
+        '   SET @USER = (select StockId from Watchlist where UserId = new.id); '
+        '   IF @USER IS NULL THEN '
+        '       insert into Watchlist value(new.id,81),(new.id,82),(new.id,83); '
+        '   END IF; '
+        'END'
+    )

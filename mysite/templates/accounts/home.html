@@ -35,7 +35,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-8 m-3">
+            <div class="col-6 m-3">
                 <h2>Your Watchlist:</h2>
                 <table class="table table-striped">
                     <thead>
@@ -57,6 +57,20 @@
                     {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            <div class="col-3 m-3">
+                <h2>Recommended Stocks</h2>
+                <ul class="list-group mt-3">
+                    <li class="list-group-item">
+                        Fastest Increasing Stock: <a href="{% url 'stock-graph' recommend.0 %}">{{ recommend.0 }}</a><br>
+                    </li>
+                    <li class="list-group-item">
+                        Fastest Decreasing Stock: <a href="{% url 'stock-graph' recommend.0 %}">{{ recommend.1 }}</a><br>
+                    </li>
+                    <li class="list-group-item">
+                        Frequently Watched Stock: <a href="{% url 'stock-graph' recommend.0 %}">{{ recommend.2 }}</a><br>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

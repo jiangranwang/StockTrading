@@ -23,12 +23,15 @@ def home_view(request):
                    '(select id from auth_user where username = %s))) a '
                    'order by freq desc, stockname asc', [request.user.username])
     rows = cursor.fetchall()
-    cursor.callproc('Recommend')
-    print(cursor.fetchall())
     freqs = []
     for i, r in enumerate(watchlist):
         freqs.append({'stockname': r.stockname, 'price': r.price, 'freq': rows[i][1]})
-    return render(request, 'accounts/home.html', {'watchlist': freqs})
+    cursor.callproc('Recommend')
+    rows = cursor.fetchall()
+    recommend = []
+    for r in rows:
+        recommend.append(r[1])
+    return render(request, 'accounts/home.html', {'watchlist': freqs, 'recommend': recommend})
 
 
 @login_required(login_url='login')
